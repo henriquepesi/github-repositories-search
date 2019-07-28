@@ -91,7 +91,10 @@ export default class Main extends Component {
           <FaGithubAlt />
           Repositórios
         </h1>
-
+        <small>
+          Type the name of the repository. Ex: facebook/react,
+          angular/angular...
+        </small>
         <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"

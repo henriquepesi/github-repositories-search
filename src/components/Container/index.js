@@ -13,10 +13,16 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-bottom: 5px;
 
     svg {
       margin-right: 10px;
     }
+  }
+
+  small {
+    color: #a2a2a2;
+    margin-top: 30px;
   }
 `;
 
