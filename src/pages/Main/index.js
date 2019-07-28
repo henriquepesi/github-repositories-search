@@ -63,18 +63,12 @@ export default class Main extends Component {
         newRepo: '',
       });
     } catch (error) {
-      const { newRepo, repositories } = this.state;
-      const hasRepo = repositories.find(r => r.name === newRepo);
+      const { errorMessage } = this.state;
 
-      if (newRepo === '') {
-        this.setState({ error: true, errorMessage: error });
-      } else if (hasRepo) {
+      if (errorMessage === '') {
         this.setState({ error: true, errorMessage: error });
       } else {
-        this.setState({
-          error: true,
-          errorMessage: "Repository doesn't exists",
-        });
+        this.setState({ error: true, errorMessage: 'Repository not found' });
       }
     } finally {
       this.setState({ loading: false });
