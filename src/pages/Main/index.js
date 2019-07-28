@@ -25,7 +25,7 @@ export default class Main extends Component {
     }
   }
 
-  // Salvar os dados do locastorage
+  // Salvar os dados do localStorage
   componentDidUpdate(_, prevState) {
     const { repositories } = this.state;
 
@@ -35,7 +35,7 @@ export default class Main extends Component {
   }
 
   handleInputChange = e => {
-    this.setState({ newRepo: e.target.value });
+    this.setState({ newRepo: e.target.value, error: null });
   };
 
   handleSubmit = async e => {
@@ -46,11 +46,11 @@ export default class Main extends Component {
     try {
       const { newRepo, repositories } = this.state;
 
-      if (newRepo === '') throw 'This field can not be empty';
+      if (newRepo === '') throw 'You need type one repository';
 
       const hasRepo = repositories.find(r => r.name === newRepo);
 
-      if (hasRepo) throw 'Already exists';
+      if (hasRepo) throw 'Duplicated repository';
 
       const response = await api.get(`/repos/${newRepo}`);
 
@@ -61,47 +61,52 @@ export default class Main extends Component {
       this.setState({
         repositories: [...repositories, data],
         newRepo: '',
-        loading: false,
-        error: false,
       });
-    } catch (err) {
-      this.setState({
-        error: true,
-        errorMessage: err,
-      });
+    } catch (error) {
+      const { newRepo, repositories } = this.state;
+      const hasRepo = repositories.find(r => r.name === newRepo);
+
+      if (newRepo === '') {
+        this.setState({ error: true, errorMessage: error });
+      } else if (hasRepo) {
+        this.setState({ error: true, errorMessage: error });
+      } else {
+        this.setState({
+          error: true,
+          errorMessage: "Repository doesn't exists",
+        });
+      }
     } finally {
-      this.setState({
-        error: true,
-        loading: false,
-      });
+      this.setState({ loading: false });
     }
   };
 
   render() {
-    const { newRepo, loading, repositories, errorMessage } = this.state;
+    const { newRepo, repositories, loading, error, errorMessage } = this.state;
+
     return (
       <Container>
         <h1>
           <FaGithubAlt />
-          Repositorios
+          Repositórios
         </h1>
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"
             placeholder="Adicionar repositório"
             value={newRepo}
             onChange={this.handleInputChange}
           />
-          <SubmitButton loading={loading ? 1 : 0}>
+
+          <SubmitButton loading={loading}>
             {loading ? (
-              <FaSpinner color="fff" size="14" />
+              <FaSpinner color="#FFF" size={14} />
             ) : (
-              <FaPlus color="#fff" size={14} />
+              <FaPlus color="#FFF" size={14} />
             )}
           </SubmitButton>
         </Form>
-
         <Error>{errorMessage}</Error>
         <List>
           {repositories.map(repository => (
