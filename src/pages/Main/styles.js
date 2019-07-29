@@ -1,4 +1,13 @@
 import styled, { keyframes, css } from 'styled-components';
+import { FaTrash } from 'react-icons/fa';
+
+export const Trash = styled(FaTrash)`
+  color: #7159c1;
+  margin-left: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 export const Form = styled.form`
   margin-top: 10px;
@@ -80,3 +89,5 @@ export const Error = styled.span`
   font-size: 12px;
   padding: 10px 5px;
 `;
+
+export const ContainerList = styled.div``;

@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { FaGithubAlt, FaPlus, FaSpinner, FaTrash } from 'react-icons/fa';
+import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Form, SubmitButton, List, Error } from './styles';
+import {
+  Form,
+  SubmitButton,
+  List,
+  Error,
+  Trash,
+  ContainerList,
+} from './styles';
 
 export default class Main extends Component {
   state = {
@@ -52,11 +59,11 @@ export default class Main extends Component {
     try {
       const { newRepo, repositories } = this.state;
 
-      if (newRepo === '') throw 'You need type one repository';
+      if (newRepo === '') throw Object.assign('You need type one repository');
 
       const hasRepo = repositories.find(r => r.name === newRepo);
 
-      if (hasRepo) throw 'Duplicated repository';
+      if (hasRepo) throw Object.assign('Duplicated repository');
 
       const response = await api.get(`/repos/${newRepo}`);
 
@@ -109,26 +116,30 @@ export default class Main extends Component {
             onChange={this.handleInputChange}
           />
 
-          <SubmitButton loading={loading}>
+          <SubmitButton loading={loading ? 1 : 0}>
             {loading ? (
               <FaSpinner color="#FFF" size={14} />
             ) : (
-              <FaPlus color="#FFF" size={14} />
-            )}
+                <FaPlus color="#FFF" size={14} />
+              )}
           </SubmitButton>
         </Form>
         <Error>{errorMessage}</Error>
+
         <List>
           {repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
-              <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Details
-              </Link>
-              <FaTrash onClick={() => this.handleDelete(repository)} />
+              <ContainerList>
+                <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
+                  Details
+                </Link>
+                <Trash onClick={() => this.handleDelete(repository)} />
+              </ContainerList>
             </li>
           ))}
         </List>
+
       </Container>
     );
   }
