@@ -120,8 +120,8 @@ export default class Main extends Component {
             {loading ? (
               <FaSpinner color="#FFF" size={14} />
             ) : (
-                <FaPlus color="#FFF" size={14} />
-              )}
+              <FaPlus color="#FFF" size={14} />
+            )}
           </SubmitButton>
         </Form>
         <Error>{errorMessage}</Error>
@@ -139,7 +139,6 @@ export default class Main extends Component {
             </li>
           ))}
         </List>
-
       </Container>
     );
   }

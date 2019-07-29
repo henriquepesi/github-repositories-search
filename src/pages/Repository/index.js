@@ -137,11 +137,11 @@ export default class Repository extends Component {
             disabled={page < 2}
             onClick={() => this.handlePage('back')}
           >
-            Anterior
+            Prev
           </button>
           <span>Página {page}</span>
           <button type="button" onClick={() => this.handlePage('next')}>
-            Próximo
+            Next
           </button>
         </PageActions>
       </Container>
