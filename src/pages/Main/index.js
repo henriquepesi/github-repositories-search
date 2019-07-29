@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import { FaGithubAlt, FaPlus, FaSpinner, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
@@ -33,6 +33,12 @@ export default class Main extends Component {
       localStorage.setItem('repositories', JSON.stringify(repositories));
     }
   }
+
+  handleDelete = repository => {
+    this.setState({
+      repositories: this.state.repositories.filter(rep => rep !== repository),
+    });
+  };
 
   handleInputChange = e => {
     this.setState({ newRepo: e.target.value, error: null });
@@ -117,8 +123,9 @@ export default class Main extends Component {
             <li key={repository.name}>
               <span>{repository.name}</span>
               <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Detalhes
+                Details
               </Link>
+              <FaTrash onClick={() => this.handleDelete(repository)} />
             </li>
           ))}
         </List>
